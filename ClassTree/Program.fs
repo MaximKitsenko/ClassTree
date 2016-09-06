@@ -18,5 +18,5 @@ and printClass (c: System.Type )=
 [<EntryPoint>]
 let main argv = 
     printfn "%A" argv
-    getAssembly argv.[0] |> getAssemblyClasses |> Array.iter printClass
+    getAssembly argv.[0] |> getAssemblyClasses |> Array.filter (fun x -> x.Name = argv.[1]) |> Array.iter printClass
     0 // return an integer exit code
