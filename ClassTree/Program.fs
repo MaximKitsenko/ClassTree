@@ -24,10 +24,14 @@ let printClassMember (deep: int) cm =
     | (fieldType.ArrayOf,fi,st) -> printStringWithTabs deep <| sprintf "%s[]" (st.ToString()
                                    printClass (deep+1) (st)
 
-let printClass (deep:int) (c: System.Type )= 
+let printClass (deep:int) (c: System.Type ) = 
     printStringWithTabs deep c.Name  
-    let temp = c.GetFields( System.Reflection.BindingFlags.NonPublic ||| System.Reflection.BindingFlags.Instance )|> Array.filter (fun x -> (x.MemberType.ToString()) = "Field" && (x.Name.EndsWith("Field")) ) |> Array.toList
-    let customTypes =  temp |> List.map getFieldInfoWithNotes |> List.sortBy (fun (x,_,_)-> x) |> List.iter (fun x-> (printClassMember deep) x)
+    let temp = c.GetFields( System.Reflection.BindingFlags.NonPublic ||| System.Reflection.BindingFlags.Instance )
+               |> Array.filter (fun x -> (x.MemberType.ToString()) = "Field" && (x.Name.EndsWith("Field")) ) 
+               |> Array.toList
+               |> List.map getFieldInfoWithNotes
+               |> List.sortBy (fun (x,_,_)-> x) 
+               |> List.iter (fun x-> (printClassMember deep) x)
     //let customGenericTypes, customSimpleTypes =  customTypes |> List.partition ( fun cm -> ( cm.FieldType.BaseType.ToString() <> "System.Object" ) )
     //systemTypes |> List.sortBy (fun x -> x.Name) |> List.iter (printfMemberOfSystemType (deep+1))
     //customSimpleTypes |> List.sortBy (fun x -> x.Name) |> List.iter (printfCustomType (deep+1))
