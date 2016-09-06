@@ -13,7 +13,7 @@ let rec printClassMember (deep: int) (cm:fieldType, fi: System.Reflection.FieldI
                                    printClass (deep+2) (st)
 and printClass (deep:int) (c: System.Type ) = 
     printStringWithTabs deep c.Name  
-    let temp = c.GetFields( System.Reflection.BindingFlags.NonPublic ||| System.Reflection.BindingFlags.Instance ) |> Array.filter (fun x -> (x.MemberType.ToString()) = "Field" && (x.Name.EndsWith("Field")) ) |> Array.toList |> List.map getFieldInfoWithNotes |> List.sortBy (fun (x,_,_)-> x) |> List.iter (fun x-> (printClassMember deep) x)
+    let temp = c.GetFields( System.Reflection.BindingFlags.NonPublic ||| System.Reflection.BindingFlags.Instance ) |> Array.filter (fun x -> (x.MemberType.ToString()) = "Field" && (x.Name.EndsWith("Field")) ) |> Array.toList |> List.map getFieldInfoWithNotes |> List.sortBy (fun (_,x,_)-> x.Name) |> List.iter (fun x-> (printClassMember deep) x)
     ()
 
 [<EntryPoint>]
