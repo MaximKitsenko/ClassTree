@@ -6,19 +6,15 @@ let getAssemblyClasses (assembly: System.Reflection.Assembly) = assembly.GetType
 let printfSystemType (m:System.Reflection.MemberInfo) = printf "%s:%s" m.Name (m.MemberType.ToString())
 
 let rec printClass (c: System.Type )= 
-    let classMembers =  c.GetMembers() 
-                            |> Array.toList 
-                            |> List.partition ( fun cm -> cm.ReflectedType.Namespace = "System")
-    match classMembers with
-    | [systemTypes,customTypes] -> 
-            systemTypes |> List.sortBy (fun (x:System.Reflection.MemberInfo) -> x.Name) |> List.iter printfSystemType
-            customTypes |> List.sortBy (fun (x:System.Reflection.MemberInfo) -> x.Name) |> List.iter printClass
+    printf "%s" c.Name
+    let systemTypes, customTypes =  c.GetMembers() |> Array.toList |> List.partition ( fun cm -> cm.ReflectedType.Namespace = "System")
+    systemTypes |> List.sortBy (fun (x:System.Reflection.MemberInfo) -> x.Name) |> List.iter printfSystemType
+    customTypes |> List.sortBy (fun (x:System.Reflection.MemberInfo) -> x.Name) |> List.iter printfSystemType
+    printf "End"
 
-
-    let simpleMembers = Array.filter  classMembers
-	
 
 [<EntryPoint>]
 let main argv = 
     printfn "%A" argv
+    getAssembly argv.[0] |> getAssemblyClasses |> Array.iter printClass
     0 // return an integer exit code
