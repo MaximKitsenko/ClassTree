@@ -33,4 +33,5 @@ and printClass (deep:int) (c: System.Type ) =
 let main argv = 
     printfn "%A" argv
     getAssembly argv.[0] |> getAssemblyClasses |> Array.filter (fun x -> x.Name = argv.[1]) |> Array.iter (printClass 0)
+    System.Console.ReadLine()
     0 // return an integer exit code
