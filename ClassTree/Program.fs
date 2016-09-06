@@ -21,7 +21,7 @@ let printClassMember (deep: int) cm =
     | (fieldType.SystemType,fi,st) -> printfMemberOfSystemType ( deep + 1) fi
     | (fieldType.CustomType,fi,st) -> printStringWithTabs deep fi.Name 
                                       printClass (deep+1) (fi.MemberType.GetType())
-    | (fieldType.ArrayOf,fi,st) -> printStringWithTabs deep <| sprintf "%s[]" (st.ToString()
+    | (fieldType.ArrayOf,fi,st) -> printStringWithTabs deep <| sprintf "%s[]" (st.ToString())
                                    printClass (deep+1) (st)
 
 let printClass (deep:int) (c: System.Type ) = 
