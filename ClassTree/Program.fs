@@ -2,9 +2,6 @@
 // See the 'F# Tutorial' project for more help.
 type fieldType = ArrayOf | SystemType | CustomType 
 
-let getAssembly assemblyPath = System.Reflection.Assembly.LoadFile(assemblyPath)
-let getAssemblyClasses (assembly: System.Reflection.Assembly) = assembly.GetTypes()
-
 let printStringWithTabs t s = [0..t]|> List.map (fun x -> "\t") |> (@) [s] |> List.rev|> (@) ["\n"] |> List.iter (fun x-> printf "%s" x)
 let printfMemberOfSystemType t (m:System.Reflection.FieldInfo) = printStringWithTabs t (sprintf "%s : %s" m.Name (m.FieldType.ToString()))
 
@@ -31,7 +28,7 @@ and printClass (deep:int) (c: System.Type ) =
 
 [<EntryPoint>]
 let main argv = 
-    printfn "%A" argv
-    getAssembly argv.[0] |> getAssemblyClasses |> Array.filter (fun x -> x.Name = argv.[1]) |> Array.iter (printClass 0)
-    System.Console.ReadLine()
+    let classes = (System.Reflection.Assembly.LoadFile( argv.[0] ).GetTypes()) |> Array.filter (fun x -> x.Name = argv.[1] && x.Namespace = argv.[2])
+    classes |> Array.iter (printClass 0)
+    System.Console.ReadLine() |> ignore
     0 // return an integer exit code

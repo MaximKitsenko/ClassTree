@@ -25,7 +25,7 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DocumentationFile>bin\Debug\ClassTree.XML</DocumentationFile>
     <Prefer32Bit>false</Prefer32Bit>
-    <StartArguments>C:/projects/magentoAccess/src/MagentoAccess/bin/Debug/magentoAccess.dll CatalogDataProductInterface</StartArguments>
+    <StartArguments>C:/projects/magentoAccess/src/MagentoAccess/bin/Debug/magentoAccess.dll CatalogDataProductInterface MagentoAccess.Magento2catalogProductRepositoryV1_v_2_0_2_0_CE</StartArguments>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
