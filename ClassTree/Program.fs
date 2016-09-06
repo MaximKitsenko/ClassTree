@@ -2,7 +2,7 @@
 // See the 'F# Tutorial' project for more help.
 type fieldType = ArrayOf | SystemType | CustomType 
 let inline flip f x y = f y x
-let printStringWithTabs t s = [0..t]|> List.map (fun x-> "\t") |> List.fold (+) "" |> flip (+) s |> (fun x-> printfn "%s" x)
+let printStringWithTabs t s = [1..t]|> List.map (fun x-> "\t") |> List.fold (+) "" |> flip (+) s |> (fun x-> printfn "%s" x)
 let getFieldInfoWithNotes (fi:System.Reflection.FieldInfo) = if fi.FieldType.IsArray then ( fieldType.ArrayOf,fi, fi.FieldType.GetElementType()) elif fi.FieldType.Namespace = "System" then ( fieldType.SystemType,fi, fi.FieldType.GetElementType()) else ( fieldType.CustomType,fi, fi.FieldType.GetElementType())
 
 let rec printClassMember (deep: int) (cm:fieldType, fi: System.Reflection.FieldInfo, st:System.Type) = 
