@@ -9,8 +9,8 @@ let rec printClassMember (deep: int) (cm:fieldType, fi: System.Reflection.FieldI
     | (fieldType.SystemType,fi,st) -> printStringWithTabs ( deep + 1) ( fi.Name + " : " + (fi.FieldType.ToString()) ) 
     | (fieldType.CustomType,fi,st) -> printStringWithTabs deep fi.Name 
                                       printClass (deep+1) (fi.MemberType.GetType())
-    | (fieldType.ArrayOf,fi,st) -> printStringWithTabs deep <| sprintf "%s[]" (st.ToString())
-                                   printClass (deep+1) (st)
+    | (fieldType.ArrayOf,fi,st) -> printStringWithTabs ( deep + 1) <|  (sprintf "%s : %s[]" fi.Name (st.ToString()))
+                                   printClass (deep+2) (st)
 and printClass (deep:int) (c: System.Type ) = 
     printStringWithTabs deep c.Name  
     let temp = c.GetFields( System.Reflection.BindingFlags.NonPublic ||| System.Reflection.BindingFlags.Instance ) |> Array.filter (fun x -> (x.MemberType.ToString()) = "Field" && (x.Name.EndsWith("Field")) ) |> Array.toList |> List.map getFieldInfoWithNotes |> List.sortBy (fun (x,_,_)-> x) |> List.iter (fun x-> (printClassMember deep) x)
