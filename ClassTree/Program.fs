@@ -3,7 +3,6 @@
 type fieldType = ArrayOf | SystemType | CustomType 
 
 let printStringWithTabs t s = [0..t]|> List.map (fun x -> "\t") |> (@) [s] |> List.rev|> (@) ["\n"] |> List.iter (fun x-> printf "%s" x)
-let printfMemberOfSystemType t (m:System.Reflection.FieldInfo) = printStringWithTabs t (sprintf "%s : %s" m.Name (m.FieldType.ToString()))
 
 let getFieldInfoWithNotes (fi:System.Reflection.FieldInfo)= 
     if fi.FieldType.IsArray then
@@ -13,9 +12,9 @@ let getFieldInfoWithNotes (fi:System.Reflection.FieldInfo)=
     else 
         ( fieldType.CustomType,fi, fi.FieldType.GetElementType())
 
-let rec printClassMember (deep: int) cm = 
-    match cm with
-    | (fieldType.SystemType,fi,st) -> printfMemberOfSystemType ( deep + 1) fi
+let rec printClassMember (deep: int) (cm:fieldType, fi: System.Reflection.FieldInfo, st:System.Type) = 
+    match (cm, fi, st) with
+    | (fieldType.SystemType,fi,st) -> printStringWithTabs ( deep + 1) ( fi.Name + " : " + (fi.FieldType.ToString()) ) 
     | (fieldType.CustomType,fi,st) -> printStringWithTabs deep fi.Name 
                                       printClass (deep+1) (fi.MemberType.GetType())
     | (fieldType.ArrayOf,fi,st) -> printStringWithTabs deep <| sprintf "%s[]" (st.ToString())
