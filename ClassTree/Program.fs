@@ -18,7 +18,6 @@ and printClass (deep:int) (c: System.Type ) =
 
 [<EntryPoint>]
 let main argv = 
-    let classes = (System.Reflection.Assembly.LoadFile( argv.[0] ).GetTypes()) |> Array.filter (fun x -> x.Name = argv.[1] && x.Namespace = argv.[2])
-    classes |> Array.iter (printClass 0)
+    let classes = (System.Reflection.Assembly.LoadFile( argv.[0] ).GetTypes()) |> Array.filter (fun x -> x.Name = argv.[1] && x.Namespace = argv.[2]) |> Array.iter (printClass 0)
     System.Console.ReadLine() |> ignore
     0 // return an integer exit code
