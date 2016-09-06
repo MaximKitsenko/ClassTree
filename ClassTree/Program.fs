@@ -3,15 +3,17 @@
 
 let getAssembly assemblyPath = System.Reflection.Assembly.LoadFile(assemblyPath)
 let getAssemblyClasses (assembly: System.Reflection.Assembly) = assembly.GetTypes()
-let printfSystemType (m:System.Reflection.MemberInfo) = printf "%s:%s" m.Name (m.MemberType.ToString())
+let printfMemberOfSystemType (m:System.Reflection.MemberInfo) = printfn "%s:%s" m.Name (m.MemberType.ToString())
 
-let rec printClass (c: System.Type )= 
-    printf "%s" c.Name
+let rec printfCustomType (m:System.Reflection.MemberInfo) = 
+    printfn "%s:[CustomType]" m.Name 
+    printClass (m.MemberType.GetType())
+
+and printClass (c: System.Type )= 
+    printfn "%s" c.Name
     let systemTypes, customTypes =  c.GetMembers() |> Array.toList |> List.partition ( fun cm -> cm.ReflectedType.Namespace = "System")
-    systemTypes |> List.sortBy (fun (x:System.Reflection.MemberInfo) -> x.Name) |> List.iter printfSystemType
-    customTypes |> List.sortBy (fun (x:System.Reflection.MemberInfo) -> x.Name) |> List.iter printfSystemType
-    printf "End"
-
+    systemTypes |> List.sortBy (fun (x:System.Reflection.MemberInfo) -> x.Name) |> List.iter printfMemberOfSystemType
+    customTypes |> List.sortBy (fun (x:System.Reflection.MemberInfo) -> x.Name) |> List.iter printfCustomType
 
 [<EntryPoint>]
 let main argv = 
