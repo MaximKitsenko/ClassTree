@@ -4,13 +4,7 @@ type fieldType = ArrayOf | SystemType | CustomType
 
 let printStringWithTabs t s = [0..t]|> List.map (fun x -> "\t") |> (@) [s] |> List.rev|> (@) ["\n"] |> List.iter (fun x-> printf "%s" x)
 
-let getFieldInfoWithNotes (fi:System.Reflection.FieldInfo)= 
-    if fi.FieldType.IsArray then
-        ( fieldType.ArrayOf,fi, fi.FieldType.GetElementType())
-    elif fi.FieldType.Namespace = "System" then
-        ( fieldType.SystemType,fi, fi.FieldType.GetElementType())
-    else 
-        ( fieldType.CustomType,fi, fi.FieldType.GetElementType())
+let getFieldInfoWithNotes (fi:System.Reflection.FieldInfo) = if fi.FieldType.IsArray then ( fieldType.ArrayOf,fi, fi.FieldType.GetElementType()) elif fi.FieldType.Namespace = "System" then ( fieldType.SystemType,fi, fi.FieldType.GetElementType()) else ( fieldType.CustomType,fi, fi.FieldType.GetElementType())
 
 let rec printClassMember (deep: int) (cm:fieldType, fi: System.Reflection.FieldInfo, st:System.Type) = 
     match (cm, fi, st) with
